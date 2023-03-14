@@ -1,5 +1,8 @@
 package com.Project.Librarymanagementsystem.Service;
 
+import com.Project.Librarymanagementsystem.DTO.StudentRequestDto;
+import com.Project.Librarymanagementsystem.DTO.StudentResponseDto;
+import com.Project.Librarymanagementsystem.DTO.StudentUpdateEmailRequestDto;
 import com.Project.Librarymanagementsystem.Entity.LibraryCard;
 import com.Project.Librarymanagementsystem.Entity.Student;
 import com.Project.Librarymanagementsystem.Enum.Status;
@@ -12,10 +15,15 @@ public class StudentService {
     @Autowired
     StudentRepository studentRepository;
 
-    public void addStudent(Student student){
+    public void addStudent(StudentRequestDto studentRequestDto){
+        Student student = new Student();
+        student.setName(studentRequestDto.getName());
+        student.setAge(studentRequestDto.getAge());
+        student.setDepartment(studentRequestDto.getDepartment());
+        student.setEmail(studentRequestDto.getEmail());
+
         LibraryCard card = new LibraryCard();
         card.setStatus(Status.ACTIVATED);
-        card.setValidTill("03/2025");
         card.setStudent(student);
 
         student.setCard(card);
@@ -24,5 +32,18 @@ public class StudentService {
     }
     public void deleteStudent(int id){
         studentRepository.deleteById(id);
+    }
+    public StudentResponseDto updateEmail(StudentUpdateEmailRequestDto studentUpdateEmailRequestDto){
+        Student student = studentRepository.findById(studentUpdateEmailRequestDto.getId()).get();
+        student.setEmail(studentUpdateEmailRequestDto.getEmail());
+
+        Student updateStudent = studentRepository.save(student);
+
+        StudentResponseDto studentResponseDto = new StudentResponseDto();
+        studentResponseDto.setId(updateStudent.getId());
+        studentResponseDto.setName(updateStudent.getName());
+        studentResponseDto.setEmail(updateStudent.getEmail());
+
+        return studentResponseDto;
     }
 }
