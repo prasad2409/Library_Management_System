@@ -26,6 +26,7 @@ public class BookService {
        book.setIssued(false);
        book.setAuthor(author);
 
+
        author.getBooks().add(book);
        authorRepository.save(author);
 

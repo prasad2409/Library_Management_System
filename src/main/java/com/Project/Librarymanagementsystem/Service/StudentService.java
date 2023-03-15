@@ -7,6 +7,7 @@ import com.Project.Librarymanagementsystem.Entity.LibraryCard;
 import com.Project.Librarymanagementsystem.Entity.Student;
 import com.Project.Librarymanagementsystem.Enum.Status;
 import com.Project.Librarymanagementsystem.Repository.StudentRepository;
+import com.Project.Librarymanagementsystem.Repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +15,7 @@ import org.springframework.stereotype.Service;
 public class StudentService {
     @Autowired
     StudentRepository studentRepository;
-
-    public void addStudent(StudentRequestDto studentRequestDto){
+    public StudentResponseDto addStudent(StudentRequestDto studentRequestDto){
         Student student = new Student();
         student.setName(studentRequestDto.getName());
         student.setAge(studentRequestDto.getAge());
@@ -25,12 +25,20 @@ public class StudentService {
         LibraryCard card = new LibraryCard();
         card.setStatus(Status.ACTIVATED);
         card.setStudent(student);
-
+        card.setValidTill(studentRequestDto.getValidTill());
         student.setCard(card);
 
-        studentRepository.save(student);
+        Student newStudent =studentRepository.save(student);
+
+        StudentResponseDto studentResponseDto = new StudentResponseDto();
+        studentResponseDto.setEmail(newStudent.getEmail());
+        studentResponseDto.setName(newStudent.getName());
+        studentResponseDto.setId(newStudent.getId());
+
+        return studentResponseDto;
+
     }
-    public void deleteStudent(int id){
+    public void deleteStudent(int id)  {
         studentRepository.deleteById(id);
     }
     public StudentResponseDto updateEmail(StudentUpdateEmailRequestDto studentUpdateEmailRequestDto){

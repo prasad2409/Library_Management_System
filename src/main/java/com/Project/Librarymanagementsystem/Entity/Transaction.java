@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 
@@ -21,11 +22,13 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String transactionNum;
+    private String transactionNumber;
     @Enumerated(EnumType.STRING)
     TransactionStatus transactionStatus;
-    @CreatedDate
+    @CreationTimestamp
     private Date transactionDate;
+    private boolean issueOperation;
+    private String message;
 
     @ManyToOne
     @JoinColumn

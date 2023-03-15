@@ -21,6 +21,7 @@ public class LibraryCard {
     private int cardNo;
     @Enumerated(EnumType.STRING)
     private Status status;
+    private String validTill;
     @CreationTimestamp
     private Date creationDate;
     @UpdateTimestamp
